@@ -9,9 +9,12 @@ namespace TravellingSalesmanOfIreland {
         static void Main(string[] args) {
             CityLocations cities;
             DataLoader loader = new DataLoader();
+            Tester codeChecking = new Tester();
 
             cities = loader.Load(2);
 
+            codeChecking.ChromosomeTesting();
+            
             Console.WriteLine("Hello");
         }
     }
