@@ -10,12 +10,12 @@ namespace TravellingSalesmanOfIreland {
     /// A chromosome is designed that it will always have a city as its start and end with one of 
     /// each other city forming a path from start to end.
     /// </summary>
-    public class Chromosome {
+    public class Chromosome : IComparable<Chromosome> {
         private int startPoint;
         private LinkedList<int> path, previousPath;
         private LinkedList<int> alter, alterWith;
         private Random randomNumberGenerator;
-        private double fitnessValue, previousFitnessValue;
+        private int fitnessValue, previousFitnessValue;
         private int mutationIndexPoint;
         
         public Chromosome() {
@@ -66,11 +66,11 @@ namespace TravellingSalesmanOfIreland {
             return path.ElementAt((tripNumber - 1));
         }
 
-        public void SetFitnessValue(double fitness) {
+        public void SetFitnessValue(int fitness) {
             fitnessValue = fitness;
         }
 
-        public double getFitness() {
+        public int getFitness() {
             return fitnessValue;
         }
 
@@ -188,12 +188,11 @@ namespace TravellingSalesmanOfIreland {
                 }
             }
 
-            // Now check section before mutation point for duplicate cities and replace with 
-            // cities left in check list.
+            // Now check section before mutation point for duplicate cities and replace with cities left in check list.
             for(int ai = 0; ai < mutationPoint; ai++) {
                 // Check against new cities add after mutation point.
                 foreach(int newCity in pathSegment) {
-                    // Detect duplicate.
+                    // Detect duplicate in path.
                     if(newPath.ElementAt(ai) == newCity) {
                         // Go through city list
                         for(int cli = 0; cli < cityCheckList.Count; cli++) {
@@ -203,9 +202,24 @@ namespace TravellingSalesmanOfIreland {
                                 int changeThis = newPath.ElementAt(ai);
                                 int removeThis = cityCheckList.ElementAt(cli);
 
-                                newPath.Find(changeThis).Value = cityCheckList.ElementAt(cli);
+                                newPath.Find(changeThis).Value = removeThis;
                                 cityCheckList.Find(removeThis).Value = -1;
+
+                                // After a change has been made, end the for loop otherwise will replace with all missing values.
+                                cli = cityCheckList.Count;
                             }
+                        }
+                    }
+                }
+
+                // Deal with start/end point of this chromosome in pathSegent passed in.
+                if(pathSegment.Contains(startPoint)) {
+                    for (int fci = 0; fci < cityCheckList.Count; fci++) {
+                        // Find last available city to replace this duplicate.
+                        if (cityCheckList.ElementAt(fci) != -1) {
+                            newPath.Find(startPoint).Value = cityCheckList.ElementAt(fci);
+
+                            fci = cityCheckList.Count;
                         }
                     }
                 }
@@ -298,6 +312,16 @@ namespace TravellingSalesmanOfIreland {
                     path.AddLast(city);
                 }
             }
+        }
+        
+        public int CompareTo(Chromosome other) {
+            if (this.fitnessValue > other.getFitness())
+                return -1;
+
+            if (this.fitnessValue == other.getFitness())
+                return 0;
+
+            return 1;
         }
     }
 }

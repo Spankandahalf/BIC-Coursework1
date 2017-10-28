@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace TravellingSalesmanOfIreland {
     class Tester {
-        public Tester() {
+        private FitnessChecker checker;
 
+        public Tester(FitnessChecker checker) {
+            this.checker = checker;
         }
 
         public void ChromosomeTesting() {
@@ -20,7 +22,7 @@ namespace TravellingSalesmanOfIreland {
                     chrom.AddCityToPath(i);
                 }
             }
-            chrom.SetFitnessValue(5);
+            chrom = checker.ProduceFitnessOfChromosome(chrom);
 
             Console.WriteLine("Chromosome create, should see 0 - 9 followed by zero");
             Console.WriteLine(chrom.ViewChromosome());
@@ -43,7 +45,7 @@ namespace TravellingSalesmanOfIreland {
 
             // Single mutation.
             chrom.Mutation(1);
-            chrom.SetFitnessValue(10);
+            chrom = checker.ProduceFitnessOfChromosome(chrom);
             Console.WriteLine("Chromosome has undergone a single mutation.");
             Console.WriteLine(chrom.ViewChromosome());
             Console.WriteLine("");
@@ -56,7 +58,7 @@ namespace TravellingSalesmanOfIreland {
 
             // Nine mutations. (Watch in debug to see if any mutations are undone)
             chrom.Mutation(9);
-            chrom.SetFitnessValue(20);
+            chrom = checker.ProduceFitnessOfChromosome(chrom);
             Console.WriteLine("Chromosome has undergone three mutations.");
             Console.WriteLine(chrom.ViewChromosome());
 
@@ -69,7 +71,7 @@ namespace TravellingSalesmanOfIreland {
                     chrom2.AddCityToPath(i);
                 }
             }
-            chrom2.SetFitnessValue(5);
+            chrom2 = checker.ProduceFitnessOfChromosome(chrom2);
 
             Console.WriteLine("Second Chromosome create to test cross mutation.");
             Console.WriteLine(chrom2.ViewChromosome());
@@ -80,8 +82,10 @@ namespace TravellingSalesmanOfIreland {
             
             chrom.CrossMutationApplication(chrom2.CrossMutationRequest(tempIndex), tempIndex);
             chrom2.CrossMutationApplication(temp, tempIndex);
+            chrom = checker.ProduceFitnessOfChromosome(chrom);
+            chrom2 = checker.ProduceFitnessOfChromosome(chrom2);
 
-            Console.WriteLine("Cross mutation check.");
+            Console.WriteLine("Cross mutation check using point: " + chrom.CrossMutationIndexPoint() + " giving: ");
             Console.WriteLine(chrom.ViewChromosome());
             Console.WriteLine(chrom2.ViewChromosome());
             Console.WriteLine("");
