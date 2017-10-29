@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 namespace TravellingSalesmanOfIreland {
     class Tester {
         private FitnessChecker checker;
+        private EvolutionaryAlgorithm ea;
 
-        public Tester(FitnessChecker checker) {
+        public Tester(FitnessChecker checker, EvolutionaryAlgorithm ea) {
             this.checker = checker;
+            this.ea = ea;
         }
 
         public void ChromosomeTesting() {
@@ -89,6 +91,86 @@ namespace TravellingSalesmanOfIreland {
             Console.WriteLine(chrom.ViewChromosome());
             Console.WriteLine(chrom2.ViewChromosome());
             Console.WriteLine("");
+
+            // Make a third chromosome and test cross mutation.
+            Chromosome chrom3 = new Chromosome();
+            for (int i = 0; i < 10; i++) {
+                if (i == 4) {
+                    chrom3.SetStartCity(i);
+                } else {
+                    chrom3.AddCityToPath(i);
+                }
+            }
+            chrom3 = checker.ProduceFitnessOfChromosome(chrom3);
+
+            Console.WriteLine("Third Chromosome create to test cross mutation with different start/end point.");
+            Console.WriteLine(chrom3.ViewChromosome());
+            Console.WriteLine("Second current looks like: " + chrom2.ViewChromosome());
+            Console.WriteLine("");
+
+            temp = chrom2.CrossMutationRequest();
+            tempIndex = chrom2.CrossMutationIndexPoint();
+
+            chrom2.CrossMutationApplication(chrom3.CrossMutationRequest(tempIndex), tempIndex);
+            chrom3.CrossMutationApplication(temp, tempIndex);
+            chrom2 = checker.ProduceFitnessOfChromosome(chrom2);
+            chrom3 = checker.ProduceFitnessOfChromosome(chrom3);
+
+            Console.WriteLine("Cross mutation check using point: " + tempIndex + " giving: ");
+            Console.WriteLine(chrom2.ViewChromosome());
+            Console.WriteLine(chrom3.ViewChromosome());
+            Console.WriteLine("");
         } 
+
+        public void EvolvePopulationTesting(List<Chromosome> population) {
+            int initialBestFitness, initialWorseFitness, evolvedBestFitness, evolvedWorseFitness;
+            List<Chromosome> newPopulation = new List<Chromosome>();
+
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("Evolving population Testing.");
+            Console.WriteLine("Note: This will use best and worse fitness to show changes, but I will use debug break points to investigate further.");
+            Console.WriteLine("");
+            Console.WriteLine("");
+
+            initialBestFitness = population.ElementAt(0).getFitness();
+            initialWorseFitness = population.ElementAt(population.Count - 1).getFitness();
+            Console.WriteLine("The populations current best fitness is: " + initialBestFitness);
+            Console.WriteLine("With a worse of :" + initialWorseFitness);
+            Console.WriteLine("");
+
+            newPopulation = ea.EvolvePopulation(population);
+
+            evolvedBestFitness = population.ElementAt(0).getFitness();
+            evolvedWorseFitness = population.ElementAt(population.Count - 1).getFitness();
+            Console.WriteLine("The populations new best fitness is: " + evolvedBestFitness);
+            Console.WriteLine("With a worse of :" + evolvedWorseFitness);
+            Console.WriteLine("");
+            Console.WriteLine("The difference in best fitness is: " + (evolvedBestFitness - initialBestFitness));
+            Console.WriteLine("With a difference in worse of :" + (evolvedWorseFitness - initialWorseFitness));
+            Console.WriteLine("");
+
+            newPopulation = ea.EvolvePopulation(population);
+
+            evolvedBestFitness = population.ElementAt(0).getFitness();
+            evolvedWorseFitness = population.ElementAt(population.Count - 1).getFitness();
+            Console.WriteLine("The populations new best fitness is: " + evolvedBestFitness);
+            Console.WriteLine("With a worse of :" + evolvedWorseFitness);
+            Console.WriteLine("");
+            Console.WriteLine("The difference in best fitness is: " + (evolvedBestFitness - initialBestFitness));
+            Console.WriteLine("With a difference in worse of :" + (evolvedWorseFitness - initialWorseFitness));
+            Console.WriteLine("");
+
+            newPopulation = ea.EvolvePopulation(population);
+
+            evolvedBestFitness = population.ElementAt(0).getFitness();
+            evolvedWorseFitness = population.ElementAt(population.Count - 1).getFitness();
+            Console.WriteLine("The populations new best fitness is: " + evolvedBestFitness);
+            Console.WriteLine("With a worse of :" + evolvedWorseFitness);
+            Console.WriteLine("");
+            Console.WriteLine("The difference in best fitness is: " + (evolvedBestFitness - initialBestFitness));
+            Console.WriteLine("With a difference in worse of :" + (evolvedWorseFitness - initialWorseFitness));
+            Console.WriteLine("");
+        }
     }
 }

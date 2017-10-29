@@ -13,15 +13,18 @@ namespace TravellingSalesmanOfIreland {
             Tester codeChecking;
             PopulationCreator populationGenerator;
             List<Chromosome> population = new List<Chromosome>();
+            EvolutionaryAlgorithm ea;
 
             cities = loader.Load(2);
             checker = new FitnessChecker(cities);
-            codeChecking = new Tester(checker);
+            ea = new EvolutionaryAlgorithm(checker);
+            codeChecking = new Tester(checker, ea);
             populationGenerator = new PopulationCreator(cities.NumberOfCities(), checker);
 
             population = populationGenerator.CreateInitialPopulation();
 
             codeChecking.ChromosomeTesting();
+            codeChecking.EvolvePopulationTesting(population);
             
             Console.WriteLine("Hello");
         }

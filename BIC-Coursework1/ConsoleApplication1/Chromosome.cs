@@ -211,16 +211,16 @@ namespace TravellingSalesmanOfIreland {
                         }
                     }
                 }
+            }
 
-                // Deal with start/end point of this chromosome in pathSegent passed in.
-                if(pathSegment.Contains(startPoint)) {
-                    for (int fci = 0; fci < cityCheckList.Count; fci++) {
-                        // Find last available city to replace this duplicate.
-                        if (cityCheckList.ElementAt(fci) != -1) {
-                            newPath.Find(startPoint).Value = cityCheckList.ElementAt(fci);
+            // Deal with start/end point of this chromosome in pathSegent passed in.
+            if(pathSegment.Contains(startPoint)) {
+                for (int fci = 0; fci < cityCheckList.Count; fci++) {
+                    // Find last available city to replace this duplicate.
+                    if (cityCheckList.ElementAt(fci) != -1) {
+                        newPath.Find(startPoint).Value = cityCheckList.ElementAt(fci);
 
-                            fci = cityCheckList.Count;
-                        }
+                        fci = cityCheckList.Count;
                     }
                 }
             }

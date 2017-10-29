@@ -46,6 +46,7 @@
     <Compile Include="Chromosome.cs" />
     <Compile Include="CityLocations.cs" />
     <Compile Include="DataLoader.cs" />
+    <Compile Include="EvolutionaryAlgorithm.cs" />
     <Compile Include="FitnessChecker.cs" />
     <Compile Include="PopulationCreator.cs" />
     <Compile Include="Program.cs" />
