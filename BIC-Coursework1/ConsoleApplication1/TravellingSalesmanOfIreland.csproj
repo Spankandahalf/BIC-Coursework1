@@ -48,6 +48,7 @@
     <Compile Include="DataLoader.cs" />
     <Compile Include="EvolutionaryAlgorithm.cs" />
     <Compile Include="FitnessChecker.cs" />
+    <Compile Include="Neuron.cs" />
     <Compile Include="PopulationCreator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,7 +63,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Data\ei8246.txt">
+    <EmbeddedResource Include="Data\ei8246TestS148.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Data\ei8246TestS10.txt">
@@ -74,6 +75,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\ei8246.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

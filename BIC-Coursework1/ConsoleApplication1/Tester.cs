@@ -125,6 +125,8 @@ namespace TravellingSalesmanOfIreland {
         public void EvolvePopulationTesting(List<Chromosome> population) {
             int initialBestFitness, initialWorseFitness, evolvedBestFitness, evolvedWorseFitness;
             List<Chromosome> newPopulation = new List<Chromosome>();
+            List<Chromosome> newPopulation2 = new List<Chromosome>();
+            List<Chromosome> newPopulation3 = new List<Chromosome>();
 
             Console.WriteLine("");
             Console.WriteLine("");
@@ -139,38 +141,56 @@ namespace TravellingSalesmanOfIreland {
             Console.WriteLine("With a worse of :" + initialWorseFitness);
             Console.WriteLine("");
 
-            newPopulation = ea.EvolvePopulation(population);
-
-            evolvedBestFitness = population.ElementAt(0).getFitness();
-            evolvedWorseFitness = population.ElementAt(population.Count - 1).getFitness();
-            Console.WriteLine("The populations new best fitness is: " + evolvedBestFitness);
-            Console.WriteLine("With a worse of :" + evolvedWorseFitness);
-            Console.WriteLine("");
-            Console.WriteLine("The difference in best fitness is: " + (evolvedBestFitness - initialBestFitness));
-            Console.WriteLine("With a difference in worse of :" + (evolvedWorseFitness - initialWorseFitness));
+            Console.WriteLine("Population evolved 5 times with default factors. Cross 60% & Mutation per 10% of range.");
             Console.WriteLine("");
 
-            newPopulation = ea.EvolvePopulation(population);
+            for (int i = 0; i < 5; i++) {
+                if(i ==0) {
+                    newPopulation = ea.EvolvePopulation(population);
+                } else {
+                    newPopulation = ea.EvolvePopulation(newPopulation);
+                }
 
-            evolvedBestFitness = population.ElementAt(0).getFitness();
-            evolvedWorseFitness = population.ElementAt(population.Count - 1).getFitness();
-            Console.WriteLine("The populations new best fitness is: " + evolvedBestFitness);
-            Console.WriteLine("With a worse of :" + evolvedWorseFitness);
-            Console.WriteLine("");
-            Console.WriteLine("The difference in best fitness is: " + (evolvedBestFitness - initialBestFitness));
-            Console.WriteLine("With a difference in worse of :" + (evolvedWorseFitness - initialWorseFitness));
+                evolvedBestFitness = newPopulation.ElementAt(0).getFitness();
+                evolvedWorseFitness = newPopulation.ElementAt(newPopulation.Count - 1).getFitness();
+                Console.WriteLine("New best fitness for generation " + (i + 1) + " is: " + evolvedBestFitness);
+                Console.WriteLine("With a worse of :" + evolvedWorseFitness);
+                Console.WriteLine("");
+            }
+
+            Console.WriteLine("Population evolved 5 times with default factors. Cross 40% & Mutation per 5% of range.");
             Console.WriteLine("");
 
-            newPopulation = ea.EvolvePopulation(population);
+            for (int i = 0; i < 5; i++) {
+                if (i == 0) {
+                    newPopulation2 = ea.EvolvePopulation(population, 0.4, 0.05);
+                } else {
+                    newPopulation2 = ea.EvolvePopulation(newPopulation2, 0.4, 0.05);
+                }
 
-            evolvedBestFitness = population.ElementAt(0).getFitness();
-            evolvedWorseFitness = population.ElementAt(population.Count - 1).getFitness();
-            Console.WriteLine("The populations new best fitness is: " + evolvedBestFitness);
-            Console.WriteLine("With a worse of :" + evolvedWorseFitness);
+                evolvedBestFitness = newPopulation2.ElementAt(0).getFitness();
+                evolvedWorseFitness = newPopulation2.ElementAt(newPopulation2.Count - 1).getFitness();
+                Console.WriteLine("New best fitness for generation " + (i + 1) + " is: " + evolvedBestFitness);
+                Console.WriteLine("With a worse of :" + evolvedWorseFitness);
+                Console.WriteLine("");
+            }
+
+            Console.WriteLine("Population evolved 5 times with default factors. Cross 70% & Mutation per 1% of range.");
             Console.WriteLine("");
-            Console.WriteLine("The difference in best fitness is: " + (evolvedBestFitness - initialBestFitness));
-            Console.WriteLine("With a difference in worse of :" + (evolvedWorseFitness - initialWorseFitness));
-            Console.WriteLine("");
+
+            for (int i = 0; i < 5; i++) {
+                if (i == 0) {
+                    newPopulation3 = ea.EvolvePopulation(population, 0.7, 0.01);
+                } else {
+                    newPopulation3 = ea.EvolvePopulation(newPopulation3, 0.7, 0.01);
+                }
+
+                evolvedBestFitness = newPopulation3.ElementAt(0).getFitness();
+                evolvedWorseFitness = newPopulation3.ElementAt(newPopulation3.Count - 1).getFitness();
+                Console.WriteLine("New best fitness for generation " + (i + 1) + " is: " + evolvedBestFitness);
+                Console.WriteLine("With a worse of :" + evolvedWorseFitness);
+                Console.WriteLine("");
+            }
         }
     }
 }

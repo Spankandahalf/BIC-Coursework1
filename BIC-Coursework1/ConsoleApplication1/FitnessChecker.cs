@@ -51,5 +51,9 @@ namespace TravellingSalesmanOfIreland {
 
             return distance;
         }
+
+        public int FitnessOfTwoCities(int startCity, int destination) {
+            return DistanceValue(startCity, destination);
+        }
     }
 }

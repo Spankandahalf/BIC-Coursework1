@@ -11,11 +11,12 @@ namespace TravellingSalesmanOfIreland {
     /// Custom data loader for travelling salesman of Ireland.
     /// </summary>
     public class DataLoader {
-        private string smallTest, fullSet;
+        private string smallTest, testSet, fullSet;
         private CityLocations loadedData;
 
         public DataLoader() {
             smallTest = "TravellingSalesmanOfIreland.Data.ei8246TestS10.txt";
+            testSet = "TravellingSalesmanOfIreland.Data.ei8246TestS148.txt";
             fullSet = "TravellingSalesmanOfIreland.Data.ei8246.txt";
 
             loadedData = new CityLocations();
@@ -24,13 +25,15 @@ namespace TravellingSalesmanOfIreland {
         /// <summary>
         /// Get travelling salesman city locations from a file in Data folder.
         /// </summary>
-        /// <param name="option">Option of 1: full set of points, 2: set of 10 points.</param>
+        /// <param name="option">Option of 1: full set of points, 2: set of 10 points, 3: 332 points.</param>
         /// <returns>List of city locations(latitude & longitude).</returns>
         public CityLocations Load(int option) {
             switch (option) {
                 case 1:LoadFileInDataFolder(fullSet);
                     break;
                 case 2: LoadFileInDataFolder(smallTest);
+                    break;
+                case 3: LoadFileInDataFolder(testSet);
                     break;
                 default: Console.WriteLine("Option error on Load(" + option + ")");
                     break;

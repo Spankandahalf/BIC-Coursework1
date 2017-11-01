@@ -74,6 +74,10 @@ namespace TravellingSalesmanOfIreland {
             return fitnessValue;
         }
 
+        public int NumberOfCitiesTravelled() {
+            return path.Count + 1;
+        }
+
         /// <summary>
         /// Gives city indexes of a path from one city, 
         /// through all the others and ending at the starting city.

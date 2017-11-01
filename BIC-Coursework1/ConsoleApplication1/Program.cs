@@ -23,7 +23,7 @@ namespace TravellingSalesmanOfIreland {
 
             population = populationGenerator.CreateInitialPopulation();
 
-            codeChecking.ChromosomeTesting();
+            //codeChecking.ChromosomeTesting();
             codeChecking.EvolvePopulationTesting(population);
             
             Console.WriteLine("Hello");

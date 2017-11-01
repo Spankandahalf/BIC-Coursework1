@@ -61,6 +61,35 @@ namespace TravellingSalesmanOfIreland.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NAME : ei8246
+        ///COMMENT : 8246 locations in Ireland
+        ///COMMENT : Derived from National Imagery and Mapping Agency data
+        ///TYPE : TSP
+        ///DIMENSION : 8246
+        ///EDGE_WEIGHT_TYPE : EUC_2D
+        ///NODE_COORD_SECTION
+        ///1 51445.0000 9479.4444
+        ///2 51455.2778 9815.8333
+        ///3 51462.2222 9433.6111
+        ///4 51466.6667 9716.6667
+        ///5 51468.6111 9810.0000
+        ///6 51470.0000 9416.3889
+        ///7 51472.7778 9768.8889
+        ///8 51481.9444 9762.2222
+        ///9 51483.3333 9350.0000
+        ///10 51483.3333 9366.6667
+        ///11 51483.6111 9783.0556
+        ///12 51486.3889 9724.7222
+        ///13 51487.7778 9348.0556
+        ///14 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ei8246 {
+            get {
+                return ResourceManager.GetString("ei8246", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to NAME : ei8246TestS10
         ///COMMENT : 8246 locations in Ireland
         ///COMMENT : Derived from National Imagery and Mapping Agency data
@@ -83,6 +112,34 @@ namespace TravellingSalesmanOfIreland.Properties {
         internal static string ei8246TestS10 {
             get {
                 return ResourceManager.GetString("ei8246TestS10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NAME : ei8246
+        ///COMMENT : 8246 locations in Ireland
+        ///COMMENT : Derived from National Imagery and Mapping Agency data
+        ///TYPE : TSP
+        ///DIMENSION : 8246
+        ///EDGE_WEIGHT_TYPE : EUC_2D
+        ///NODE_COORD_SECTION
+        ///18 51500.8333 9708.6111
+        ///19 51505.8333 9350.8333
+        ///20 51511.3889 9585.0000
+        ///21 51513.3333 9305.5556
+        ///22 51513.6111 9233.0556
+        ///23 51515.8333 9193.8889
+        ///24 51519.7222 9271.9444
+        ///25 51520.8333 9656.1111
+        ///26 51522.2222 9394.1667
+        ///27 51522.7778 9502.5000
+        ///28 51524.4444 9602.2222
+        ///29 51526.3889 9183.3333
+        ///30 51530.2778 9331 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ei8246TestS148 {
+            get {
+                return ResourceManager.GetString("ei8246TestS148", resourceCulture);
             }
         }
     }

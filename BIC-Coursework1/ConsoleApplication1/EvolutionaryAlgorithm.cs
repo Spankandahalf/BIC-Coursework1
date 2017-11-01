@@ -51,6 +51,9 @@ namespace TravellingSalesmanOfIreland {
             Chromosome travelPlan = new Chromosome();
             Chromosome secondTravelPlan = new Chromosome();
 
+            // Ensure newPopulation is empty, If running multiple times.
+            newPopulation.Clear();
+
             // Find out range of population and workout required value for evolving.
             bestFitness = population.ElementAt(0).getFitness();
             worseFitness = population.ElementAt(population.Count - 1).getFitness();
