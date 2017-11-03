@@ -192,5 +192,7 @@ namespace TravellingSalesmanOfIreland {
                 Console.WriteLine("");
             }
         }
+
+
     }
 }

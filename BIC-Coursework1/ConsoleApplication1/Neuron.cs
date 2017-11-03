@@ -14,6 +14,7 @@ namespace TravellingSalesmanOfIreland {
         private Random numberGenerator;
         private FitnessChecker checker;
         private double threshold;
+        private bool setThreshold;
         private Chromosome output;
         private Chromosome[] pathInputs;
 
@@ -22,6 +23,7 @@ namespace TravellingSalesmanOfIreland {
             numberOfInputs = -1;  // -1 means unset.
             numberGenerator = new Random();
             this.checker = checker;
+            setThreshold = true;
         }
 
         public void SetNumberOfInputs(int amount) {
@@ -74,12 +76,40 @@ namespace TravellingSalesmanOfIreland {
             inputWeight[whichInputNumber] = numberGenerator.Next(numberOfInputs);
         }
 
+        public double GetWeightForInput(int inputIndex) {
+            return inputWeight[inputIndex];
+        }
+
+        /// <summary>
+        /// After initial use, an ANN updates it's weights to improve them and lead to better results. 
+        /// </summary>
+        /// <param name="updateWith">What will be added to the current weight value.</param>
+        /// <param name="whichWeight">Which input weight to update.</param>
+        public void UpdateInputWeight(double updateWith, int whichWeight) {
+            double weight = inputWeight[whichWeight];
+            weight += updateWith;
+            inputWeight[whichWeight] = weight;
+        }
+
+        public double ThresholdValue() {
+            return threshold;
+        }
+
+        /// <summary>
+        /// After initial use, an ANN updates a neuron's threshold to improve them and lead to better results. 
+        /// </summary>
+        /// <param name="updateWith">What to add to current threshold to improve it.</param>
+        public void UpdateThreshold(double updateWith) {
+            threshold += updateWith;
+        }
+
         /// <summary>
         /// Once all the inputs have been entered, use this to prepare the output of the neuron.
         /// </summary>
         public void PrepareOutputForInputNeuron() {
             int lowestIndex = 0;
             double lowestWeight = inputWeight[0];
+            ResetAvailabilities();
             
             // Get input with lowest weight.
             for(int startIndex = 1; startIndex < inputs.Count(); startIndex++) {
@@ -128,17 +158,64 @@ namespace TravellingSalesmanOfIreland {
             // With output complete, get it's fitness
             output = checker.ProduceFitnessOfChromosome(output);
 
-            // Set up Threshold value
-            threshold = (checker.FitnessOfTwoCities(inputs[0], inputs[1]) * numberOfInputs);
+            // Set up Threshold value if needed.
+            if (setThreshold) {
+                threshold = (checker.FitnessOfTwoCities(inputs[0], inputs[1]) * numberOfInputs);
+                setThreshold = false;
+            }
+        }
+
+        private void ResetAvailabilities() {
+            for(int i = 0; i < inputAvailable.Count(); i++) {
+                inputAvailable[i] = false;
+            }
         }
 
         public void PrepareOutputForHiddenOutputNeuron() {
+            double totalWeight = 0.00;
 
+            // Workout the total weight of all inputs.
+            foreach(double weight in inputWeight) {
+                totalWeight += weight;
+            }
+
+            double inputIndexRef = 0;
+            double changeRef = -1;
+            // Using weights to produce percentage of input to add to output. i.e. first input works out at 50% -> first half of the path comes from it.
+            for(int inputCount = 0; inputCount < pathInputs.Count(); inputCount++) {
+                // Work out where to end taking from, work out the weight percentage out of all inputs then multiple by number of cities in path.
+                // Add that to start point to find end for that path.
+                changeRef = Math.Round(inputIndexRef + ((inputWeight[inputCount] / totalWeight) * pathInputs[inputCount].NumberOfCitiesTravelled()));
+
+                // Add start city if starting loop.
+                if(inputCount == 0) {
+                    output.SetStartCity(pathInputs[0].GetStartCity());
+                    // Reduce end index by one to account for the addition of start city.
+                    changeRef--;
+                // Last input, the method of taking from inputs may not be 100% each time so will make sure all cities are added.
+                } else if ((inputCount + 1) == pathInputs.Count()) {
+                    changeRef = pathInputs[inputCount].NumberOfCitiesTravelled() - 1; // Cities minus start city (as stored separately).
+                }
+
+                // Add cities to path of output up to it's weighted allotment.
+                for(int chromeosomeIndex = (int)inputIndexRef; chromeosomeIndex < changeRef; chromeosomeIndex++) {
+                    output.AddCityToPath(pathInputs[inputCount].GetCityFromPath(chromeosomeIndex));
+                }
+
+                // Prepare for next input.
+                inputIndexRef = changeRef;
+            }
+
+            // Set up Threshold value if needed.
+            if (setThreshold) {
+                threshold = (checker.FitnessOfTwoCities(inputs[0], inputs[1]) * numberOfInputs);
+                setThreshold = false;
+            }
         }
 
         public Chromosome ProduceOutput() {
             if(output.getFitness() > threshold) {
-                // Alter output.
+                output.AlterForNegativeThreshold();
             }
 
             return output;

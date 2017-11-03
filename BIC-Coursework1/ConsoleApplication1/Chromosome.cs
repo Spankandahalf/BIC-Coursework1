@@ -34,8 +34,22 @@ namespace TravellingSalesmanOfIreland {
             this.startPoint = startPoint;
         }
 
+        public int GetStartCity() {
+            return startPoint;
+        }
+
         public void AddCityToPath(int city) {
             path.AddLast(city);
+        }
+
+        /// <summary>
+        /// Gives a city from the path. 
+        /// Note: First available city is the destination from the start city.
+        /// </summary>
+        /// <param name="pathIndex">Index of city in path. Note: Starts at 0 and you exclude the start and end city.</param>
+        /// <returns>Number of a city.</returns>
+        public int GetCityFromPath(int pathIndex) {
+            return path.ElementAt(pathIndex);
         }
 
         /// <summary>
@@ -229,6 +243,8 @@ namespace TravellingSalesmanOfIreland {
                 }
             }
 
+            StoreCurrentConfiguration();
+
             // Replace path with new cross over mutation path.
             path.Clear();
             foreach(int city in newPath) {
@@ -326,6 +342,38 @@ namespace TravellingSalesmanOfIreland {
                 return 0;
 
             return 1;
+        }
+
+        /// <summary>
+        /// As I am using the chromosomes as outputs for neurons, this is added for use by them alone.
+        /// </summary>
+        public void AlterForNegativeThreshold() {
+            StoreCurrentConfiguration();
+
+            int cityOneValue = -1;
+            int cityTwoValue = -1;
+            for (int swapIndex = 0; swapIndex < path.Count; swapIndex++) {
+                if(cityOneValue == 0) {
+                    // Swap start point with first destination.
+                    cityOneValue = startPoint;
+                    cityTwoValue = path.ElementAt(swapIndex);
+                    path.Find(cityTwoValue).Value = cityOneValue;
+                    startPoint = cityTwoValue;
+                } else if(swapIndex + 1 != path.Count) {
+                    // Swap city with next. 
+                    cityOneValue = path.ElementAt(swapIndex);
+                    cityTwoValue = path.ElementAt(swapIndex + 1);
+                    path.Find(cityTwoValue).Value = cityOneValue;
+                    path.Find(cityOneValue).Value = cityTwoValue;
+                    swapIndex++;
+                } else {
+                    /// Swap city with previous as last city in path and it has not been swapped.
+                    cityOneValue = path.ElementAt(swapIndex);
+                    cityTwoValue = path.ElementAt(swapIndex - 1);
+                    path.Find(cityTwoValue).Value = cityOneValue;
+                    path.Find(cityOneValue).Value = cityTwoValue;
+                }
+            }
         }
     }
 }
