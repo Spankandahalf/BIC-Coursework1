@@ -14,9 +14,9 @@ namespace TravellingSalesmanOfIreland {
             this.ea = ea;
         }
 
-        public void ChromosomeTesting() {
+        public void ChromosomeTesting(Random randomNumberGenerator) {
             // Create
-            Chromosome chrom = new Chromosome();
+            Chromosome chrom = new Chromosome(randomNumberGenerator);
             for (int i = 0; i < 10; i++) {
                 if (i == 0) {
                     chrom.SetStartCity(i);
@@ -65,7 +65,7 @@ namespace TravellingSalesmanOfIreland {
             Console.WriteLine(chrom.ViewChromosome());
 
             // Make a second chromosome and test cross mutation.
-            Chromosome chrom2 = new Chromosome();
+            Chromosome chrom2 = new Chromosome(randomNumberGenerator);
             for (int i = 0; i < 10; i++) {
                 if (i == 0) {
                     chrom2.SetStartCity(i);
@@ -93,7 +93,7 @@ namespace TravellingSalesmanOfIreland {
             Console.WriteLine("");
 
             // Make a third chromosome and test cross mutation.
-            Chromosome chrom3 = new Chromosome();
+            Chromosome chrom3 = new Chromosome(randomNumberGenerator);
             for (int i = 0; i < 10; i++) {
                 if (i == 4) {
                     chrom3.SetStartCity(i);
@@ -193,6 +193,94 @@ namespace TravellingSalesmanOfIreland {
             }
         }
 
+        public void NeuronTesting(Random randomNumberGenerator) {
+            // Test Able to create a neuron.
+            Neuron neuronOne = new Neuron(checker, 1, randomNumberGenerator);
+            Chromosome outputOne = new Chromosome(randomNumberGenerator);
 
+            neuronOne.SetNumberOfInputs(10);
+            for(int count = 0; count < 10; count++) {
+                neuronOne.EnterInput(count, count);
+            }
+
+            neuronOne.PrepareOutputForInputNeuron();
+
+            outputOne = neuronOne.ProduceOutput();
+
+            Console.WriteLine("Create first neuron using 10 inputs.");
+            for (int weightCount = 0; weightCount < 10; weightCount++) {
+                Console.WriteLine("Producing a weight of: " + neuronOne.GetWeightForInput(weightCount) + " for input " + (weightCount + 1) + 
+                    " that has the value of: " + neuronOne.GetInputValue(weightCount));
+            }
+            Console.WriteLine("And generating a Threshold of: " + neuronOne.ThresholdValue());
+            Console.WriteLine("Giving an output of: " + outputOne.ViewChromosome() + " with fitness of: " + outputOne.getFitness());
+            Console.WriteLine("");
+
+            // Make a second.
+            Neuron neuronTwo = new Neuron(checker, 1, randomNumberGenerator);
+            Chromosome outputTwo = new Chromosome(randomNumberGenerator);
+
+            neuronTwo.SetNumberOfInputs(10);
+            for (int count = 0; count < 10; count++) {
+                neuronTwo.EnterInput(count, count);
+            }
+
+            neuronTwo.PrepareOutputForInputNeuron();
+
+            outputTwo = neuronTwo.ProduceOutput();
+
+            Console.WriteLine("Create second neuron using 10 inputs.");
+            for (int weightCount = 0; weightCount < 10; weightCount++) {
+                Console.WriteLine("Producing a weight of: " + neuronTwo.GetWeightForInput(weightCount) + " for input " + (weightCount + 1) +
+                    " that has the value of: " + neuronTwo.GetInputValue(weightCount));
+            }
+            Console.WriteLine("And generating a Threshold of: " + neuronTwo.ThresholdValue());
+            Console.WriteLine("Giving an output of: " + outputTwo.ViewChromosome() + " with fitness of: " + outputTwo.getFitness());
+            Console.WriteLine("");
+
+            // Make a third.
+            Neuron neuronThree = new Neuron(checker, 1, randomNumberGenerator);
+            Chromosome outputThree = new Chromosome(randomNumberGenerator);
+
+            neuronThree.SetNumberOfInputs(10);
+            for (int count = 0; count < 10; count++) {
+                neuronThree.EnterInput(count, count);
+            }
+
+            neuronThree.PrepareOutputForInputNeuron();
+
+            outputThree = neuronThree.ProduceOutput();
+
+            Console.WriteLine("Create second neuron using 10 inputs.");
+            for (int weightCount = 0; weightCount < 10; weightCount++) {
+                Console.WriteLine("Producing a weight of: " + neuronThree.GetWeightForInput(weightCount) + " for input " + (weightCount + 1) +
+                    " that has the value of: " + neuronThree.GetInputValue(weightCount));
+            }
+            Console.WriteLine("And generating a Threshold of: " + neuronThree.ThresholdValue());
+            Console.WriteLine("Giving an output of: " + outputThree.ViewChromosome() + " with fitness of: " + outputThree.getFitness());
+            Console.WriteLine("");
+
+            // Make a neuron using paths from other neurons.
+            Neuron neuronFour = new Neuron(checker, 2, randomNumberGenerator);
+            Chromosome outputFour = new Chromosome(randomNumberGenerator);
+
+            neuronFour.SetNumberOfInputs(3);
+            neuronFour.EnterInput(0, outputOne);
+            neuronFour.EnterInput(1, outputTwo);
+            neuronFour.EnterInput(2, outputThree);
+
+            neuronFour.PrepareOutputForHiddenOutputNeuron();
+
+            outputFour = neuronFour.ProduceOutput();
+
+            Console.WriteLine("Create second neuron using the three output paths above.");
+            for (int weightCount = 0; weightCount < 3; weightCount++) {
+                Console.WriteLine("Producing a weight of: " + neuronFour.GetWeightForInput(weightCount) + " for input " + (weightCount + 1) +
+                    " that has the value of: " + neuronFour.GetPathInputValue(weightCount));
+            }
+            Console.WriteLine("And generating a Threshold of: " + neuronFour.ThresholdValue());
+            Console.WriteLine("Giving an output of: " + outputFour.ViewChromosome() + " with fitness of: " + outputFour.getFitness());
+            Console.WriteLine("");
+        }
     }
 }

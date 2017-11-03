@@ -57,7 +57,7 @@ namespace TravellingSalesmanOfIreland {
         /// <param name="selector">A random number generator.</param>
         /// <returns>A randomly sequenced chromosome.</returns>
         private Chromosome CreateChromosome(Random selector) {
-            Chromosome sequence = new Chromosome();
+            Chromosome sequence = new Chromosome(selector);
             LinkedList<int> usedCities = new LinkedList<int>();
             int city = -1;
 

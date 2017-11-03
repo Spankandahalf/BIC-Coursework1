@@ -18,13 +18,13 @@ namespace TravellingSalesmanOfIreland {
         private int fitnessValue, previousFitnessValue;
         private int mutationIndexPoint;
         
-        public Chromosome() {
+        public Chromosome(Random randomNumberGenerator) {
             startPoint = -1;
             path = new LinkedList<int>();
             previousPath = new LinkedList<int>();
             alter = new LinkedList<int>();
             alterWith = new LinkedList<int>();
-            randomNumberGenerator = new Random();
+            this.randomNumberGenerator = randomNumberGenerator;
             fitnessValue = -1;
             previousFitnessValue = -1;
             mutationIndexPoint = -1;

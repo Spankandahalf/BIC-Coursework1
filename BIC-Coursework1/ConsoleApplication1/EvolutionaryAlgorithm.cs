@@ -12,10 +12,12 @@ namespace TravellingSalesmanOfIreland {
         private int bestFitness, worseFitness, rangeOfFitness;
         private double crossMuttionCutOff, mutationDivValue;
         private double crossMutationFactor, mutationFactor;
+        private Random randomNumberGenerator;
 
-        public EvolutionaryAlgorithm(FitnessChecker checker) {
+        public EvolutionaryAlgorithm(FitnessChecker checker, Random randomNumberGenerator) {
             this.checker = checker;
             newPopulation = new LinkedList<Chromosome>();
+            this.randomNumberGenerator = randomNumberGenerator;
 
             crossMutationFactor = 0.6; // 60%
             mutationFactor = 0.1;  // 10%
@@ -48,8 +50,8 @@ namespace TravellingSalesmanOfIreland {
         /// <returns>New evolved population, same size as previous.</returns>
         public List<Chromosome> EvolvePopulation(List<Chromosome> population) {
             this.population = population;
-            Chromosome travelPlan = new Chromosome();
-            Chromosome secondTravelPlan = new Chromosome();
+            Chromosome travelPlan = new Chromosome(randomNumberGenerator);
+            Chromosome secondTravelPlan = new Chromosome(randomNumberGenerator);
 
             // Ensure newPopulation is empty, If running multiple times.
             newPopulation.Clear();

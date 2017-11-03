@@ -18,12 +18,13 @@ namespace TravellingSalesmanOfIreland {
         private Chromosome output;
         private Chromosome[] pathInputs;
 
-        public Neuron(FitnessChecker checker, int type) {
+        public Neuron(FitnessChecker checker, int type, Random randomNumberGenerator) {
             typeOfNeuron = type;
             numberOfInputs = -1;  // -1 means unset.
-            numberGenerator = new Random();
+            numberGenerator = randomNumberGenerator;
             this.checker = checker;
             setThreshold = true;
+            output = new Chromosome(randomNumberGenerator);
         }
 
         public void SetNumberOfInputs(int amount) {
@@ -35,6 +36,8 @@ namespace TravellingSalesmanOfIreland {
             if (typeOfNeuron == 1) {
                 inputs = new int[numberOfInputs];
                 inputAvailable = new bool[numberOfInputs];
+
+                Array.Clear(inputs, 0, inputs.Length);
             } else if (typeOfNeuron == 2) {
                 pathInputs = new Chromosome[numberOfInputs];
             }
@@ -78,6 +81,19 @@ namespace TravellingSalesmanOfIreland {
 
         public double GetWeightForInput(int inputIndex) {
             return inputWeight[inputIndex];
+        }
+
+        /// <summary>
+        /// For test purposes.
+        /// </summary>
+        /// <param name="inputIndex">Which input you want value of.</param>
+        /// <returns>Value for requested input.</returns>
+        public int GetInputValue(int inputIndex) {
+            return inputs[inputIndex];
+        }
+
+        public string GetPathInputValue(int inputIndex) {
+            return pathInputs[inputIndex].ViewChromosome();
         }
 
         /// <summary>
@@ -128,7 +144,7 @@ namespace TravellingSalesmanOfIreland {
             double secondLowestWeight = -1;
 
             while(output.NumberOfCitiesTravelled() < numberOfInputs) {
-                for (int index = 1; index < inputs.Count(); index++) {
+                for (int index = 0; index < inputs.Count(); index++) {
                     // Check second lowest weight has a value.
                     if (secondLowestWeight == -1 && inputAvailable[index] == true) {
                         secondLowestWeight = inputWeight[index];
@@ -167,7 +183,7 @@ namespace TravellingSalesmanOfIreland {
 
         private void ResetAvailabilities() {
             for(int i = 0; i < inputAvailable.Count(); i++) {
-                inputAvailable[i] = false;
+                inputAvailable[i] = true;
             }
         }
 
@@ -206,9 +222,16 @@ namespace TravellingSalesmanOfIreland {
                 inputIndexRef = changeRef;
             }
 
+            // With output complete, get it's fitness
+            output = checker.ProduceFitnessOfChromosome(output);
+
             // Set up Threshold value if needed.
             if (setThreshold) {
-                threshold = (checker.FitnessOfTwoCities(inputs[0], inputs[1]) * numberOfInputs);
+                threshold = 0;
+                foreach(Chromosome path in pathInputs) {
+                    threshold += path.getFitness();
+                }
+                threshold = threshold / pathInputs.Length;
                 setThreshold = false;
             }
         }

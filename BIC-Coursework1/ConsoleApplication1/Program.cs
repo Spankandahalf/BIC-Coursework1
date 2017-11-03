@@ -14,17 +14,19 @@ namespace TravellingSalesmanOfIreland {
             PopulationCreator populationGenerator;
             List<Chromosome> population = new List<Chromosome>();
             EvolutionaryAlgorithm ea;
+            Random randomNumberGenerator = new Random();
 
             cities = loader.Load(2);
             checker = new FitnessChecker(cities);
-            ea = new EvolutionaryAlgorithm(checker);
+            ea = new EvolutionaryAlgorithm(checker, randomNumberGenerator);
             codeChecking = new Tester(checker, ea);
             populationGenerator = new PopulationCreator(cities.NumberOfCities(), checker);
 
             population = populationGenerator.CreateInitialPopulation();
 
-            //codeChecking.ChromosomeTesting();
-            codeChecking.EvolvePopulationTesting(population);
+            //codeChecking.ChromosomeTesting(randomNumberGenerator);
+            //codeChecking.EvolvePopulationTesting(population);
+            codeChecking.NeuronTesting(randomNumberGenerator);
             
             Console.WriteLine("Hello");
         }
